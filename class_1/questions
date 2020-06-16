@@ -1,0 +1,9 @@
+● O que são o std::cin e std::cout?
+  R: São as funções de leitura (std::cin) e escrita (std::cout) basicas, esperando a escrita do usuario ou escrevendo algo na tela
+
+● Qual a função do return 0 do método main?
+  R: Indicar que o programa encerrou sem erros, costumamos enviar `return <0` quando o codigo atinge um erro
+
+● O que são o int argc, e o char* argv[]?
+  R: int argc     - representa o numeros de argumentos passados para o programa na hora da execução
+     char* argv[] - um array de ponteiros de caracteres, são as strings passadas como argumentos do programa
