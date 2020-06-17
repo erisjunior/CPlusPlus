@@ -1,0 +1,6 @@
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterControlStatement: false
+  AfterEnum: false
+  AfterStruct: false
+  SplitEmptyFunction: false
