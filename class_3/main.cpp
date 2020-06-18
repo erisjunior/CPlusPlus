@@ -10,6 +10,8 @@ void printUseCase(const std::string &prog_name) {
   std::cout << prog_name << " list" << std::endl;
 }
 
+void addMessage() {}
+
 int main(int argc, char const *argv[]) {
   std::string prog_name = argv[0];
 
@@ -26,7 +28,8 @@ int main(int argc, char const *argv[]) {
     if (argc > 2) {
       message = argv[2];
     } else {
-      std::cin >> message;
+      std::cout << "Informe a mensagem: " << std::endl;
+      std::getline(std::cin, message);
     }
 
     std::ofstream output_file{"diary", std::ios::app};
@@ -37,17 +40,31 @@ int main(int argc, char const *argv[]) {
     return 0;
   }
 
-  if (action == "list") { // não finalizada
-    std::string diary;
-    std::ifstream input_file{"diary"};
+  if (action == "list") {
+    std::ifstream input_file;
 
-    if (input_file.fail()) {
-      std::cout << "Arquivo não encontrado." << std::endl;
+    input_file.open("diary");
+
+    if (!input_file.is_open()) {
+      std::cerr << "Arquivo não existente ou sem permissão" << std::endl;
       return 1;
     }
 
-    input_file >> diary;
-    std::cout << diary;
+    std::string message;
+
+    int line_number = 0;
+
+    while (!input_file.eof()) {
+      ++line_number;
+      std::getline(input_file, message);
+
+      if (message.size() == 0) {
+        continue;
+      }
+      std::cout << line_number << ". " << message << std::endl;
+    }
+
+    input_file.close();
 
     return 0;
   }
