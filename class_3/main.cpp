@@ -10,8 +10,6 @@ void printUseCase(const std::string &prog_name) {
   std::cout << prog_name << " list" << std::endl;
 }
 
-void addMessage() {}
-
 int main(int argc, char const *argv[]) {
   std::string prog_name = argv[0];
 
