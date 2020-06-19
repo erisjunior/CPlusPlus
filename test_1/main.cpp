@@ -86,6 +86,27 @@ int list_messages() {
   return 0;
 }
 
+int add_message(const std::string &message) {
+  std::ofstream output_file{"diary", std::ios::app};
+
+  if (!output_file.is_open()) {
+    std::cerr << "Arquivo não pode ser criado" << std::endl;
+    return 1;
+  }
+
+  std::string date = get_current_date();
+
+  if (get_last_date() != date) {
+    output_file << "# " << date << std::endl << std::endl;
+  }
+
+  output_file << "- " << get_current_time() << " | " << message << std::endl;
+  output_file.close();
+
+  print_success();
+  return 0;
+}
+
 int main(int argc, char const *argv[]) {
   std::string prog_name = argv[0];
 
@@ -105,27 +126,7 @@ int main(int argc, char const *argv[]) {
       std::getline(std::cin, message);
     }
 
-    std::ofstream output_file{"diary", std::ios::app};
-
-    if (!output_file.is_open()) {
-      std::cerr << "Arquivo não pode ser criado" << std::endl;
-      return 1;
-    }
-
-    std::string date = get_current_date();
-
-    std::cout << get_current_date() << std::endl;
-    std::cout << get_last_date() << std::endl;
-    if (get_last_date() != date) {
-      output_file << "# " << date << std::endl << std::endl;
-    }
-
-    output_file << "- " << get_current_time() << " | " << message << std::endl;
-
-    output_file.close();
-
-    print_success();
-    return 0;
+    return add_message(message);
   }
 
   if (action == "list") {
