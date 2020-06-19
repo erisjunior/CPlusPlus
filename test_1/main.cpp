@@ -28,7 +28,7 @@ std::string get_current_time() { return format_current_date("%H:%M:%S"); }
 
 std::string get_last_date() {
   std::ifstream input_file;
-  input_file.open("diary");
+  input_file.open("diary.md");
 
   if (!input_file.is_open()) {
     return "";
@@ -56,7 +56,7 @@ std::string get_last_date() {
 int list_messages() {
   std::ifstream input_file;
 
-  input_file.open("diary");
+  input_file.open("diary.md");
 
   if (!input_file.is_open()) {
     std::cerr << "Arquivo não existente ou você não tem permissão para isso"
@@ -71,15 +71,10 @@ int list_messages() {
   while (!input_file.eof()) {
     std::getline(input_file, message);
 
-    if (message.size() == 0) {
-      continue;
+    if (message[0] == '-') {
+      ++line_number;
+      std::cout << line_number << ". " << message.substr(13) << std::endl;
     }
-    if (message[0] == '#') {
-      continue;
-    }
-
-    ++line_number;
-    std::cout << line_number << ". " << message.substr(13) << std::endl;
   }
 
   input_file.close();
@@ -87,7 +82,7 @@ int list_messages() {
 }
 
 int add_message(const std::string &message) {
-  std::ofstream output_file{"diary", std::ios::app};
+  std::ofstream output_file{"diary.md", std::ios::app};
 
   if (!output_file.is_open()) {
     std::cerr << "Arquivo não pode ser criado" << std::endl;
