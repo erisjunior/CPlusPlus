@@ -11,6 +11,11 @@ Diary::Diary(const std::string &filename)
 }
 
 void Diary::add(const std::string &messageContent) {
+  if (messages_capacity <= messages_size) {
+    std::cout << "Capacidade máxima do diário atingida" << std::endl;
+    return;
+  }
+
   Message message;
 
   message.content = messageContent;
@@ -22,7 +27,7 @@ void Diary::add(const std::string &messageContent) {
   // }
 
   messages[messages_size] = message;
-  messages_size++;
+  messages_size += 1;
 }
 
 void Diary::write() {
