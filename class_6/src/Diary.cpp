@@ -4,15 +4,16 @@
 #include <fstream>
 #include <iostream>
 
-Diary::Diary(const std::string &filename) : filename(filename) {}
+Diary::Diary(const std::string &filename)
+    : filename(filename), messages_capacity(10), messages_size(0),
+      messages(nullptr) {
+  messages = new Message[messages_capacity];
+}
 
 void Diary::add(const std::string &messageContent) {
-  // std::ofstream file{filename, std::ios::app};
+  Message message;
 
-  // if (!file.is_open()) {
-  // std::cerr << "Arquivo não pode ser criado" << std::endl;
-  // return 1;
-  // }
+  message.content = messageContent;
 
   // std::string date = get_current_date();
 
@@ -20,16 +21,15 @@ void Diary::add(const std::string &messageContent) {
   //   file << "# " << date << std::endl << std::endl;
   // }
 
-  Message message;
-
-  message.content = messageContent;
-
-  // messages[messages_size] = message;
-  // messages_size = messages_size + 1;
-
-  // return 0;
+  messages[messages_size] = message;
+  messages_size++;
 }
 
 void Diary::write() {
-  // std::cout << messages_size << " " << messages[0].content;
+  // std::ofstream file{filename, std::ios::app};
+
+  // if (!file.is_open()) {
+  // std::cerr << "Arquivo não pode ser criado" << std::endl;
+  // return 1;
+  // }
 }
