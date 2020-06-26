@@ -19,7 +19,7 @@ struct Diary {
   void add(const std::string &messageContent);
   void write();
 
-  // DateTime get_last_date();
+  std::string get_last_date();
 };
 
 #endif

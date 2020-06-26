@@ -11,6 +11,7 @@ struct Time {
   unsigned seconds;
 
   void set_from_string(const std::string &time);
+  std::string to_string();
 };
 
 #endif
