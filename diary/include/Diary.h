@@ -17,6 +17,7 @@ struct Diary {
   void load();
 
   void add(const std::string &messageContent);
+  void add(const Message &message);
   void write();
 
   std::string get_last_date();

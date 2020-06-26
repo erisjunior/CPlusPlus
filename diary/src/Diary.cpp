@@ -8,22 +8,69 @@ Diary::Diary(const std::string &filename)
     : filename(filename), messages(nullptr), messages_size(0),
       messages_capacity(10) {
   messages = new Message[messages_capacity];
+
+  load();
 }
 
 Diary::~Diary() { delete[] messages; }
 
-void Diary::add(const std::string &messageContent) {
-  if (messages_capacity <= messages_size) {
+void Diary::load() {
+  std::ifstream file;
+  file.open(filename);
+
+  if (!file.is_open()) {
     return;
   }
 
+  std::string line;
+  Date date;
+
+  while (!file.eof()) {
+    std::getline(file, line);
+    if (line.size() == 0) {
+      continue;
+    }
+
+    if (line[0] == '#') {
+      date.set_from_string(line.substr(2));
+      continue;
+    }
+
+    Message message;
+    message.date = date;
+    message.time.set_from_string(line.substr(2));
+    message.content = line.substr(13);
+    add(message);
+  }
+
+  file.close();
+}
+
+void Diary::add(const Message &message) {
+  if (messages_capacity <= messages_size) {
+    messages_capacity *= 2;
+
+    Message *new_messages = new Message[messages_capacity];
+
+    for (size_t i = 0; i < messages_size; i++) {
+      new_messages[i] = messages[i];
+    }
+
+    delete[] messages;
+    messages = new_messages;
+  }
+
+  messages[messages_size] = message;
+  messages_size += 1;
+}
+
+void Diary::add(const std::string &messageContent) {
   Message message;
   message.content = messageContent;
   message.date.set_from_string(get_current_date());
   message.time.set_from_string(get_current_time());
 
-  messages[messages_size] = message;
-  messages_size += 1;
+  add(message);
 }
 
 void Diary::write() {
@@ -51,25 +98,25 @@ void Diary::write() {
 }
 
 std::string Diary::get_last_date() {
-  std::ifstream input_file;
-  input_file.open(filename);
+  std::ifstream file;
+  file.open(filename);
 
-  if (!input_file.is_open()) {
+  if (!file.is_open()) {
     return "";
   }
 
   std::string line;
   std::string date;
 
-  while (!input_file.eof()) {
-    std::getline(input_file, line);
+  while (!file.eof()) {
+    std::getline(file, line);
 
     if (line[0] == '#') {
       date = line;
     }
   }
 
-  input_file.close();
+  file.close();
   if (date.size() == 0) {
     return "";
   }
