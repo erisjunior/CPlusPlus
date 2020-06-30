@@ -17,6 +17,8 @@ struct App {
   int add(const std::string message);
 
   int list();
+
+  int search(const std::string searc_value);
 };
 
 #endif

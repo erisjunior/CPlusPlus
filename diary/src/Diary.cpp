@@ -3,6 +3,7 @@
 #include "../include/Message.h"
 
 #include <fstream>
+#include <string>
 
 Diary::Diary(const std::string &filename)
     : filename(filename), messages(nullptr), messages_size(0),
@@ -95,6 +96,18 @@ void Diary::write() {
   }
 
   file.close();
+}
+
+Message *Diary::search(const std::string search_value) {
+  Message *ptr = messages;
+  for (size_t i = 0; i < messages_size; i++) {
+    if (ptr[0].content.find(search_value) != std::string::npos) {
+      return ptr;
+    }
+    ptr++;
+  }
+
+  return nullptr;
 }
 
 std::string Diary::get_last_date() {

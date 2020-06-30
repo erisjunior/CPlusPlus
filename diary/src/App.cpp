@@ -26,6 +26,12 @@ int App::run(int argc, char **argv) {
     return list();
   }
 
+  if (action == "search") {
+    if (argc > 2) {
+      return search(argv[2]);
+    }
+  }
+
   return show_usage(prog_name);
 }
 
@@ -52,10 +58,25 @@ int App::list() {
   return 0;
 }
 
+int App::search(const std::string search_value) {
+  Message *message = diary.search(search_value);
+
+  if (message) {
+    std::cout << "# " << message[0].date.to_string() << " - "
+              << message[0].time.to_string() << " | " << message[0].content
+              << std::endl;
+    return 0;
+  }
+
+  std::cout << "Não existe mensagem com esse termo." << std::endl;
+  return 1;
+}
+
 int App::show_usage(const std::string prog_name) {
   std::cout << "Uso: " << std::endl;
   std::cout << prog_name << " add <mensagem>" << std::endl;
   std::cout << prog_name << " list" << std::endl;
+  std::cout << prog_name << " search <termo de busca>" << std::endl;
 
   return 1;
 }

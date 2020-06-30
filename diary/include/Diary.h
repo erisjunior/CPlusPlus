@@ -20,6 +20,8 @@ struct Diary {
   void add(const Message &message);
   void write();
 
+  Message *search(std::string search_value);
+
   std::string get_last_date();
 };
 
