@@ -3,16 +3,15 @@
 
 #include "Message.h"
 
+#include <fstream>
 #include <string>
+#include <vector>
 
 struct Diary {
   Diary(const std::string &filename);
-  ~Diary();
 
   std::string filename;
-  Message *messages;
-  size_t messages_size;
-  size_t messages_capacity;
+  std::vector<Message> messages;
 
   void load();
 
@@ -20,7 +19,7 @@ struct Diary {
   void add(const Message &message);
   void write();
 
-  Message *search(std::string search_value);
+  std::vector<Message *> search(std::string search_value);
 
   std::string get_last_date();
 };

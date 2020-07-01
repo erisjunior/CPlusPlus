@@ -1,8 +1,5 @@
 #include "../include/App.h"
 
-#include <iostream>
-#include <string>
-
 App::App(const std::string &filename) : diary(filename) {}
 
 int App::run(int argc, char **argv) {
@@ -51,25 +48,25 @@ int App::add(const std::string message) {
 }
 
 int App::list() {
-  for (size_t i = 0; i < diary.messages_size; i++) {
-    const Message &message = diary.messages[i];
+  for (auto message : diary.messages) {
     std::cout << "- " << message.content << std::endl;
   }
   return 0;
 }
 
 int App::search(const std::string search_value) {
-  Message *message = diary.search(search_value);
+  std::vector<Message *> messages_vector = diary.search(search_value);
 
-  if (message) {
-    std::cout << "# " << message[0].date.to_string() << " - "
-              << message[0].time.to_string() << " | " << message[0].content
-              << std::endl;
-    return 0;
+  if (messages_vector.empty()) {
+    std::cout << "Não existe mensagem com esse termo." << std::endl;
+  } else {
+    std::cout << messages_vector.size() << std::endl;
+    for (auto message : messages_vector) {
+      std::cout << "# " << message->content << std::endl;
+    }
   }
 
-  std::cout << "Não existe mensagem com esse termo." << std::endl;
-  return 1;
+  return 0;
 }
 
 int App::show_usage(const std::string prog_name) {

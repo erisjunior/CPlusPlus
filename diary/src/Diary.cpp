@@ -2,18 +2,7 @@
 #include "../include/Aux.h"
 #include "../include/Message.h"
 
-#include <fstream>
-#include <string>
-
-Diary::Diary(const std::string &filename)
-    : filename(filename), messages(nullptr), messages_size(0),
-      messages_capacity(10) {
-  messages = new Message[messages_capacity];
-
-  load();
-}
-
-Diary::~Diary() { delete[] messages; }
+Diary::Diary(const std::string &filename) : filename(filename) { load(); }
 
 void Diary::load() {
   std::ifstream file;
@@ -47,23 +36,7 @@ void Diary::load() {
   file.close();
 }
 
-void Diary::add(const Message &message) {
-  if (messages_capacity <= messages_size) {
-    messages_capacity *= 2;
-
-    Message *new_messages = new Message[messages_capacity];
-
-    for (size_t i = 0; i < messages_size; i++) {
-      new_messages[i] = messages[i];
-    }
-
-    delete[] messages;
-    messages = new_messages;
-  }
-
-  messages[messages_size] = message;
-  messages_size += 1;
-}
+void Diary::add(const Message &message) { messages.push_back(message); }
 
 void Diary::add(const std::string &messageContent) {
   Message message;
@@ -83,31 +56,31 @@ void Diary::write() {
 
   std::string last_date = get_last_date();
 
-  for (size_t i = 0; i < messages_size; i++) {
-    std::string date = messages[i].date.to_string();
+  for (auto message : messages) {
+    std::string date = message.date.to_string();
 
     if (last_date != date) {
       file << "# " << date << std::endl;
       last_date = date;
     }
 
-    file << "- " << messages[i].time.to_string() << " | " << messages[i].content
+    file << "- " << message.time.to_string() << " | " << message.content
          << std::endl;
   }
 
   file.close();
 }
 
-Message *Diary::search(const std::string search_value) {
-  Message *ptr = messages;
-  for (size_t i = 0; i < messages_size; i++) {
-    if (ptr[0].content.find(search_value) != std::string::npos) {
-      return ptr;
+std::vector<Message *> Diary::search(const std::string search_value) {
+  std::vector<Message *> messages_vector;
+
+  for (auto message : messages) {
+    if (message.content.find(search_value) != std::string::npos) {
+      messages_vector.push_back(&message);
     }
-    ptr++;
   }
 
-  return nullptr;
+  return messages_vector;
 }
 
 std::string Diary::get_last_date() {

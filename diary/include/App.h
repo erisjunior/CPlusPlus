@@ -3,6 +3,7 @@
 
 #include "Diary.h"
 
+#include <iostream>
 #include <string>
 
 struct App {
@@ -18,7 +19,7 @@ struct App {
 
   int list();
 
-  int search(const std::string searc_value);
+  int search(const std::string search_value);
 };
 
 #endif

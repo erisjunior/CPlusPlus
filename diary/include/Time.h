@@ -1,6 +1,7 @@
 #ifndef TIME_H
 #define TIME_H
 
+#include <sstream>
 #include <string>
 
 struct Time {

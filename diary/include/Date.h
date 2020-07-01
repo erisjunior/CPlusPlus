@@ -1,6 +1,7 @@
 #ifndef DATE_H
 #define DATE_H
 
+#include <sstream>
 #include <string>
 
 struct Date {
