@@ -74,7 +74,7 @@ void Diary::write() {
 std::vector<Message *> Diary::search(const std::string search_value) {
   std::vector<Message *> messages_vector;
 
-  for (auto message : messages) {
+  for (auto &message : messages) {
     if (message.content.find(search_value) != std::string::npos) {
       messages_vector.push_back(&message);
     }

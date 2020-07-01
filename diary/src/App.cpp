@@ -60,9 +60,10 @@ int App::search(const std::string search_value) {
   if (messages_vector.empty()) {
     std::cout << "Não existe mensagem com esse termo." << std::endl;
   } else {
-    std::cout << messages_vector.size() << std::endl;
     for (auto message : messages_vector) {
-      std::cout << "# " << message->content << std::endl;
+      std::cout << "# " << message->date.to_string() << " - "
+                << message->time.to_string() << " | " << message->content
+                << std::endl;
     }
   }
 
