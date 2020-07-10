@@ -2,10 +2,9 @@
 
 Client::Client() { this->balance = 0; }
 
-Client::~Client() { save(); }
-
-void Client::save() {
-  std::ofstream file{"cliente_1.txt"};
+void Client::save(int client_number) {
+  std::string file_name = "client_" + std::to_string(client_number) + ".txt";
+  std::ofstream file{file_name};
 
   if (!file.is_open()) {
     return;

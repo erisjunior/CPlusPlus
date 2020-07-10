@@ -15,6 +15,8 @@ public:
   Market market;
   Client client;
 
+  int clients_number;
+
   int run(int argc, char *argv[]);
 
   void add_funds_to_client();

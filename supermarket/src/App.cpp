@@ -1,6 +1,6 @@
 #include "../include/App.hpp"
 
-App::App() {}
+App::App() { this->clients_number = 1; }
 
 int App::run(int argc, char **argv) {
   std::string action = "";
@@ -19,6 +19,9 @@ int App::run(int argc, char **argv) {
     } else if (action == "3") {
       list_client_cart();
     } else if (action == "0") {
+      this->client.save(clients_number);
+      this->clients_number += 1;
+
       show_init_other_client();
 
       std::string choice;
@@ -27,6 +30,8 @@ int App::run(int argc, char **argv) {
       if (choice == "2") {
         return 0;
       } else {
+        Client new_client;
+        this->client = new_client;
         show_usage();
       }
     }
