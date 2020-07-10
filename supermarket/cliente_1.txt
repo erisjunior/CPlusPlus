@@ -1,0 +1,3 @@
+#2 Arroz | R$ 3.4 | Quantidade1 | Total: R$ 3.4
+Gastos do cliente: 3.4
+Saldo do cliente: 1996.6
