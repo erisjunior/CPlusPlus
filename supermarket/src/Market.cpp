@@ -39,7 +39,7 @@ void Market::load_file() {
     std::getline(stream, number, ',');
     product.qnt = std::stoi(number);
 
-    this->products.push_back(product);
+    this->products.push(product);
   }
 
   file.close();
@@ -54,7 +54,8 @@ void Market::save_file() {
 
   file << "COD,PRODUTO,PREÇO,QUANTIDADE VENDIDA,LUCRO" << std::endl;
 
-  for (auto product : this->products) {
+  for (size_t i = 0; i < this->products.size; i++) {
+    Product product = this->products.elements[i];
     if (product.sold_qnt > 0) {
       file << product.code << "," << product.name << ",R$ " << product.price
            << "," << product.sold_qnt << "," << product.sold_qnt * product.price
@@ -66,7 +67,8 @@ void Market::save_file() {
 }
 
 void Market::list_products() {
-  for (auto product : this->products) {
+  for (size_t i = 0; i < this->products.size; i++) {
+    Product product = this->products.elements[i];
     if (product.qnt - product.sold_qnt > 0) {
       std::cout << "#" << product.code << " " << product.name << " | R$"
                 << product.price
@@ -78,7 +80,8 @@ void Market::list_products() {
 
 void Market::list_info() {
   float total = 0;
-  for (auto product : this->products) {
+  for (size_t i = 0; i < this->products.size; i++) {
+    Product product = this->products.elements[i];
     if (product.qnt - product.sold_qnt > 0) {
       float product_profit = product.price * product.sold_qnt;
       total += product_profit;
@@ -92,7 +95,8 @@ void Market::list_info() {
 }
 
 int Market::has_product(int code) {
-  for (auto product : this->products) {
+  for (size_t i = 0; i < this->products.size; i++) {
+    Product product = this->products.elements[i];
     if (product.code == code) {
       return 1;
     }
@@ -101,7 +105,8 @@ int Market::has_product(int code) {
 }
 
 Product Market::find_product(int code) {
-  for (auto product : this->products) {
+  for (size_t i = 0; i < this->products.size; i++) {
+    Product product = this->products.elements[i];
     if (product.code == code) {
       return product;
     }
@@ -109,9 +114,9 @@ Product Market::find_product(int code) {
 }
 
 void Market::sell(int code) {
-  for (size_t i = 0; i < this->products.size(); i++) {
-    if (this->products[i].code == code) {
-      this->products[i].sold_qnt += 1;
+  for (size_t i = 0; i < this->products.size; i++) {
+    if (this->products.elements[i].code == code) {
+      this->products.elements[i].sold_qnt += 1;
       return;
     }
   }

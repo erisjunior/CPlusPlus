@@ -15,8 +15,10 @@ int App::run(int argc, char **argv) {
     if (action == "1") {
       add_funds_to_client();
     } else if (action == "2") {
-      add_product_to_client();
+      list_market_products();
     } else if (action == "3") {
+      add_product_to_client();
+    } else if (action == "4") {
       list_client_cart();
     } else if (action == "0") {
       this->client.save(clients_number);
@@ -49,6 +51,8 @@ void App::add_funds_to_client() {
   this->client.add_funds(amount);
 }
 
+void App::list_market_products() { this->market.list_products(); }
+
 void App::add_product_to_client() {
   float code;
 
@@ -79,7 +83,8 @@ void App::add_product_to_client() {
 
 void App::list_client_cart() {
   std::cout << std::endl;
-  for (auto product : this->client.cart) {
+  for (size_t i = 0; i < this->client.cart.size; i++) {
+    Product product = this->client.cart.elements[i];
     show_product(product);
   }
 }
@@ -92,8 +97,9 @@ void App::show_product(Product product) {
 void App::show_usage() {
   std::cout << "Supermarket 1.0" << std::endl << std::endl;
   std::cout << "1) Add funds to your client" << std::endl;
-  std::cout << "2) Add product to client cart" << std::endl;
-  std::cout << "3) Show client cart" << std::endl;
+  std::cout << "2) List market products" << std::endl;
+  std::cout << "3) Add product to client cart" << std::endl;
+  std::cout << "4) Show client cart" << std::endl;
   std::cout << "0) Finish Client" << std::endl << std::endl;
 }
 

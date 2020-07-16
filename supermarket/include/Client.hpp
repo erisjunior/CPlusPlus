@@ -2,10 +2,8 @@
 #define CLIENT_HPP
 
 #include "Product.hpp"
+#include "vector_supermarket.hpp"
 #include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
 
 class Client {
 public:
@@ -13,7 +11,7 @@ public:
 
   float balance;
 
-  std::vector<Product> cart;
+  vector_supermarket<Product> cart;
 
   void add_funds(float amount);
   void add_product(Product product);

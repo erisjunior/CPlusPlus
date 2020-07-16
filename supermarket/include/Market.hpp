@@ -2,17 +2,16 @@
 #define MARKET_HPP
 
 #include "Product.hpp"
+#include "vector_supermarket.hpp"
 #include <fstream>
-#include <iostream>
 #include <sstream>
-#include <vector>
 
 class Market {
 public:
   Market();
   ~Market();
 
-  std::vector<Product> products;
+  vector_supermarket<Product> products;
 
   void load_file();
   void save_file();

@@ -11,7 +11,8 @@ void Client::save(int client_number) {
   }
 
   float total = 0;
-  for (auto product : this->cart) {
+  for (size_t i = 0; i < this->cart.size; i++) {
+    Product product = this->cart.elements[i];
     if (product.sold_qnt > 0) {
       float product_profit = product.price * product.sold_qnt;
       total += product_profit;
@@ -33,14 +34,14 @@ void Client::add_funds(float amount) { this->balance += amount; }
 void Client::add_product(Product product) {
   this->balance -= product.price;
 
-  for (size_t i = 0; i < this->cart.size(); i++) {
-    if (this->cart[i].code == product.code) {
-      this->cart[i].sold_qnt += 1;
+  for (size_t i = 0; i < this->cart.size; i++) {
+    if (this->cart.elements[i].code == product.code) {
+      this->cart.elements[i].sold_qnt += 1;
 
       return;
     }
   }
 
   product.sold_qnt = 1;
-  this->cart.push_back(product);
+  this->cart.push(product);
 }
