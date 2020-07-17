@@ -72,7 +72,7 @@ void Market::list_products() {
     if (product.qnt - product.sold_qnt > 0) {
       std::cout << "#" << product.code << " " << product.name << " | R$"
                 << product.price
-                << " | Quantidade restante: " << product.qnt - product.sold_qnt
+                << " | Remaining quantity: " << product.qnt - product.sold_qnt
                 << std::endl;
     }
   }
@@ -87,11 +87,20 @@ void Market::list_info() {
       total += product_profit;
 
       std::cout << "#" << product.code << " " << product.name
-                << " | Quantidade vendida: " << product.sold_qnt
-                << " | Lucro: R$" << product_profit << std::endl;
+                << " | Sold quantity: " << product.sold_qnt << " | Profit: R$"
+                << product_profit << std::endl;
     }
   }
-  std::cout << std::endl << "Lucro Total: R$ " << total << std::endl;
+  std::cout << std::endl << "Total profit: R$ " << total << std::endl;
+}
+
+void Market::fill_product_stock(std::string name, int qnt) {
+  for (size_t i = 0; i < this->products.size; i++) {
+    if (this->products.elements[i].name == name) {
+      this->products.elements[i].qnt += qnt;
+      return;
+    }
+  }
 }
 
 int Market::has_product(int code) {

@@ -3,15 +3,21 @@
 
 #include "Product.hpp"
 #include "vector_supermarket.hpp"
+#include <fstream>
+#include <sstream>
 
 class Supplier {
 public:
   vector_supermarket<Product> products;
 
   Supplier();
+  ~Supplier();
+
+  void load_file();
+  void save_file();
 
   void list_products();
-  void suply();
+  int supply(std::string name, int qnt);
 };
 
 #endif

@@ -19,6 +19,8 @@ public:
   void list_products();
   void list_info();
 
+  void fill_product_stock(std::string name, int qnt);
+
   int has_product(int code);
   Product find_product(int code);
 
