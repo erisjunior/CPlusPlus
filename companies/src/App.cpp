@@ -6,8 +6,8 @@ App::App() { this->clients_number = 1; }
 
 void App::run() {
   show_usage();
-  std::string action = "";
 
+  std::string action = "";
   std::cout << std::endl << "Select your action: ";
   std::cin >> action;
 
@@ -101,60 +101,67 @@ void App::run_restaurant() {
 /** @Client */
 
 void App::add_funds_to_client() {
-  float amount;
+  try {
+    std::string amount;
+    std::cout << "Amount to add to funds: ";
+    std::cin >> amount;
 
-  std::cout << "Amount to add to funds: ";
-  std::cin >> amount;
-
-  this->client.add_funds(amount);
+    this->client.add_funds(std::stof(amount));
+  } catch (...) {
+    std::cout << "An error ocurried, check your input" << std::endl;
+  }
 }
 
 void App::add_product_to_client() {
-  float code;
+  try {
+    std::string code;
+    std::cout << "Product code: ";
+    std::cin >> code;
 
-  std::cout << "Product code: ";
-  std::cin >> code;
+    if (!std::stoi(code)) {
+      throw(std::string("Please enter a code number"));
+    }
 
-  int has_product = this->market.has_product(code);
-  if (has_product == 0) {
-    std::cout << "Unavailable product" << std::endl;
-    return;
+    Product product = this->market.find_product(std::stoi(code));
+
+    if (product.price > this->client.balance) {
+      throw(std::string("Insufficient funds"));
+    }
+
+    this->market.sell(product.code);
+    this->client.add_product(product);
+  } catch (const std::string err) {
+    std::cout << err << std::endl;
+  } catch (...) {
+    std::cout << "An error ocurried, check your input" << std::endl;
   }
-
-  Product product = this->market.find_product(code);
-
-  if (product.price > this->client.balance) {
-    std::cout << "Insufficient funds" << std::endl;
-    return;
-  }
-
-  if (product.qnt - product.sold_qnt < 1) {
-    std::cout << "Out of stock" << std::endl;
-    return;
-  }
-
-  this->market.sell(product.code);
-  this->client.add_product(product);
 }
 
 void App::add_food_to_client() {
-  std::string name;
-  int qnt;
+  try {
+    std::string name;
+    std::string qnt_string;
 
-  std::cout << "Product name: ";
-  std::getline(std::cin, name);
-  std::cout << "Product quantity: ";
-  std::cin >> qnt;
+    std::cout << "Product name: ";
+    std::getline(std::cin, name);
+    std::cout << "Product quantity: ";
+    std::cin >> qnt_string;
 
-  Product product = this->restaurant.find_product(name);
+    int qnt = std::stoi(qnt_string);
 
-  if (product.price * qnt > this->client.balance) {
-    std::cout << "Insufficient funds" << std::endl;
-    return;
+    Product product = this->restaurant.find_product(name);
+
+    if (product.price * qnt > this->client.balance) {
+      throw(std::string("Insufficient funds"));
+    }
+
+    this->restaurant.sell(name, qnt);
+    this->client.add_product(product);
+  } catch (const std::string err) {
+    std::cout << err << std::endl;
+  } catch (...) {
+    std::cout << "An error ocurried, check your input" << std::endl;
   }
-
-  this->restaurant.sell(name, qnt);
-  this->client.add_product(product);
 }
 
 void App::list_client_cart() {
@@ -210,18 +217,23 @@ void App::list_supplier_products() {
 }
 
 void App::supply_market() {
-  std::string product_name;
-  int product_qnt;
+  try {
+    std::string product_name;
+    std::string product_qnt_string;
 
-  std::cout << "Enter the product name: ";
-  std::getline(std::cin, product_name);
-  std::cout << "Enter quantity: ";
-  std::cin >> product_qnt;
+    std::cout << "Enter the product name: ";
+    std::getline(std::cin, product_name);
+    std::cout << "Enter quantity: ";
+    std::cin >> product_qnt_string;
 
-  int supply_result = this->supplier.supply(product_name, product_qnt);
+    int product_qnt = std::stoi(product_qnt_string);
 
-  if (supply_result == 0) {
+    this->supplier.supply(product_name, product_qnt);
     this->market.fill_product_stock(product_name, product_qnt);
+  } catch (const std::string err) {
+    std::cout << err << std::endl;
+  } catch (...) {
+    std::cout << "An error ocurried, check your input" << std::endl;
   }
 }
 

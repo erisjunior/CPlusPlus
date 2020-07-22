@@ -4,6 +4,7 @@
 #include "Product.hpp"
 #include "vector_supermarket.hpp"
 #include <fstream>
+#include <iostream>
 #include <sstream>
 
 class Supplier {
@@ -16,7 +17,7 @@ public:
   void load_file();
   void save_file();
 
-  int supply(std::string name, int qnt);
+  void supply(std::string name, int qnt);
 };
 
 #endif

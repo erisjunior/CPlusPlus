@@ -1,15 +1,27 @@
 #include "../include/Supplier.hpp"
 
-Supplier::Supplier() { load_file(); }
+Supplier::Supplier() {
+  try {
+    load_file();
+  } catch (const std::string err) {
+    std::cout << err << std::endl << std::endl;
+  }
+}
 
-Supplier::~Supplier() { save_file(); }
+Supplier::~Supplier() {
+  try {
+    save_file();
+  } catch (const std::string err) {
+    std::cout << err << std::endl << std::endl;
+  }
+}
 
 void Supplier::load_file() {
   std::ifstream file;
   file.open("fornecedor.csv");
 
   if (!file.is_open()) {
-    return;
+    throw(std::string("Impossible to read the supplier file"));
   }
 
   std::string line;
@@ -42,7 +54,7 @@ void Supplier::save_file() {
   std::ofstream file{"fornecedor.csv"};
 
   if (!file.is_open()) {
-    return;
+    throw(std::string("Impossible to save the supplier file"));
   }
 
   file << "PRODUTO,QUANTIDADE" << std::endl;
@@ -55,15 +67,15 @@ void Supplier::save_file() {
   file.close();
 }
 
-int Supplier::supply(std::string name, int qnt) {
+void Supplier::supply(std::string name, int qnt) {
   for (size_t i = 0; i < this->products.size; i++) {
     Product product = this->products.elements[i];
     if (product.name == name) {
-      if (product.qnt - product.sold_qnt >= qnt) {
-        this->products.elements[i].sold_qnt += qnt;
-        return 1;
+      if (product.qnt - product.sold_qnt < qnt) {
+        throw(std::string("Insufficient amount in stock"));
       }
-      return 0;
+
+      this->products.elements[i].sold_qnt += qnt;
     }
   }
 }

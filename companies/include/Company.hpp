@@ -4,6 +4,7 @@
 #include "Product.hpp"
 #include "vector_supermarket.hpp"
 #include <fstream>
+#include <iostream>
 #include <sstream>
 
 class Company {

@@ -1,15 +1,27 @@
 #include "../include/Restaurant.hpp"
 
-Restaurant::Restaurant() { load_file(); }
+Restaurant::Restaurant() {
+  try {
+    load_file();
+  } catch (const std::string err) {
+    std::cout << err << std::endl << std::endl;
+  }
+}
 
-Restaurant::~Restaurant() { save_file(); }
+Restaurant::~Restaurant() {
+  try {
+    save_file();
+  } catch (const std::string err) {
+    std::cout << err << std::endl << std::endl;
+  }
+}
 
 void Restaurant::load_file() {
   std::ifstream file;
   file.open("menu.csv");
 
   if (!file.is_open()) {
-    return;
+    throw(std::string("Impossible to read the restaurant file"));
   }
 
   std::string line;
@@ -41,7 +53,7 @@ void Restaurant::save_file() {
   std::ofstream file{"restaurant_cashier.csv"};
 
   if (!file.is_open()) {
-    return;
+    throw(std::string("Impossible to create restaurant cashier file"));
   }
 
   file << "ITEM,PREÇO,QUANTIDADE VENDIDA,LUCRO" << std::endl;
@@ -64,6 +76,7 @@ Product Restaurant::find_product(std::string product_name) {
       return product;
     }
   }
+  throw(std::string("Product not found"));
 }
 
 void Restaurant::sell(std::string product_name, int qnt) {
@@ -73,4 +86,5 @@ void Restaurant::sell(std::string product_name, int qnt) {
       return;
     }
   }
+  throw(std::string("Product not found"));
 }

@@ -1,15 +1,27 @@
 #include "../include/Market.hpp"
 
-Market::Market() { load_file(); }
+Market::Market() {
+  try {
+    load_file();
+  } catch (const std::string err) {
+    std::cout << err << std::endl << std::endl;
+  }
+}
 
-Market::~Market() { save_file(); }
+Market::~Market() {
+  try {
+    save_file();
+  } catch (const std::string err) {
+    std::cout << err << std::endl << std::endl;
+  }
+}
 
 void Market::load_file() {
   std::ifstream file;
   file.open("estoque.csv");
 
   if (!file.is_open()) {
-    return;
+    throw(std::string("Impossible to read the market file"));
   }
 
   std::string line;
@@ -49,7 +61,7 @@ void Market::save_file() {
   std::ofstream file{"supermarket_cashier.csv"};
 
   if (!file.is_open()) {
-    return;
+    throw(std::string("Impossible to create market cashier file"));
   }
 
   file << "COD,PRODUTO,PREÇO,QUANTIDADE VENDIDA,LUCRO" << std::endl;
@@ -75,16 +87,6 @@ void Market::fill_product_stock(std::string name, int qnt) {
   }
 }
 
-int Market::has_product(int code) {
-  for (size_t i = 0; i < this->products.size; i++) {
-    Product product = this->products.elements[i];
-    if (product.code == code) {
-      return 1;
-    }
-  }
-  return 0;
-}
-
 Product Market::find_product(int code) {
   for (size_t i = 0; i < this->products.size; i++) {
     Product product = this->products.elements[i];
@@ -92,13 +94,20 @@ Product Market::find_product(int code) {
       return product;
     }
   }
+  throw(std::string("Product not found"));
 }
 
 void Market::sell(int code) {
   for (size_t i = 0; i < this->products.size; i++) {
-    if (this->products.elements[i].code == code) {
+    Product product = this->products.elements[i];
+    if (product.code == code) {
+      if (product.qnt - product.sold_qnt < 1) {
+        throw(std::string("Product out of stock"));
+      }
+
       this->products.elements[i].sold_qnt += 1;
       return;
     }
   }
+  throw(std::string("Product not found"));
 }
